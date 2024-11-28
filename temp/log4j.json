@@ -1,0 +1,18 @@
+{
+    "ruleHeader": {
+        "action": "log",
+        "protocols": "tcp",
+        "sourceIP": "any",
+        "sourcePort": "any",
+        "destinationIP": "any",
+        "destinationPort": "any",
+        "direction": "->",
+        "sid": 3001
+    },
+    "ruleOptions": {
+        "msg": "Log4j Exploit Detected",
+        "payloadDetectionOptions": {
+            "regex": "\\$\\{jndi:(ldap|rmi|dns|nis|iiop|corba|ldaps):\\/\\/[^\\s}]+\\}"
+        }
+    }
+}

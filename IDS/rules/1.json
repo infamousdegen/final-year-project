@@ -1,0 +1,18 @@
+{
+    "ruleHeader": {
+        "action": "alert",
+        "protocols": "tcp",
+        "sourceIP": "any",
+        "sourcePort": "any",
+        "destinationIP": "any",
+        "destinationPort": "any",
+        "direction": "->",
+        "sid": 2007
+    },
+    "ruleOptions": {
+        "msg": "XSS Image Tag Detected",
+        "payloadDetectionOptions": {
+            "regex": "<\\s*img\\b[^>]*\\bonerror\\s*=\\s*(['\"])[^\\1]*\\1"
+        }
+    }
+}
