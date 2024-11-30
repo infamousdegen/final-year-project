@@ -19,7 +19,7 @@ class Sniffer(Thread):
         self.pcap_file = pcap_file
         self.redisinstance = redis.Redis(host=redis_host, port=redis_port, db=redis_db)
         #Implement the ratelimiter 
-        self.ratelimit = RateLimiter(20,30,20,self.redisinstance)
+        self.ratelimit = RateLimiter(10,30,30,self.redisinstance)
         self.malwaresignature = load_malware_signatures('malware_signatures.json')
 
     def stop(self):
@@ -47,35 +47,35 @@ class Sniffer(Thread):
         elif packet_callback(scapy_pkt,self.malwaresignature):
             print("Dropping malicious packet")
             pkt.drop()
-        # else:
+        else:
 
 
-        #     for rule in self.ruleList:
-        #         matched = rule.match(scapy_pkt)
+            for rule in self.ruleList:
+                matched = rule.match(scapy_pkt)
 
-        #         if matched:
-        #             print("Inside matching ")
-        #             action = rule.action
-        #             if action.lower() == 'alert':
-        #                 messagetoAlert = rule.getEntireAlertMessage(scapy_pkt, rule.sid)
-        #                 print("...............................................................................................")
-        #                 print(messagetoAlert)
-        #                 print("...............................................................................................")
-        #             elif action.lower() == 'log':
-        #                 log_packet(rule, scapy_pkt)
-        #             elif action.lower() == 'drop':
-        #                 print("Dropping packet inside drop function")
-        #                 pkt.drop()
-        #                 return  # Stop further processing, drop packet
-        #             elif action.lower() == 'block':
-        #                 pass
-        #             else:
-        #                 print("Not a valid action")
+                if matched:
+                    # print("Inside matching ")
+                    action = rule.action
+                    if action.lower() == 'alert':
+                        messagetoAlert = rule.getEntireAlertMessage(scapy_pkt, rule.sid)
+                        print("...............................................................................................")
+                        print(messagetoAlert)
+                        print("...............................................................................................")
+                    elif action.lower() == 'log':
+                        log_packet(rule, scapy_pkt)
+                    elif action.lower() == 'drop':
+                        print("Dropping packet inside drop function")
+                        pkt.drop()
+                        return  # Stop further processing, drop packet
+                    elif action.lower() == 'block':
+                        pass
+                    else:
+                        print("Not a valid action")
 
-        pkt.accept()  # Accept the packet if not dropped
+            pkt.accept()  # Accept the packet if not dropped
     def run(self):
         print("Sniffing started.")
-        print("inside run function")
+        # print("inside run function")
         nfqueue = NetfilterQueue()
         nfqueue.bind(1, self.inPacket)  # Bind to queue 1
 

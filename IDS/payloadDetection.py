@@ -6,7 +6,7 @@ from ApplicationLayer import *
 
 
 def checkPayload(payloadOptions, pkt):
-    print("siniede calling check payload ")
+    # print("siniede calling check payload ")
     payload = None
 
     if pkt.haslayer(TCP):
@@ -19,8 +19,8 @@ def checkPayload(payloadOptions, pkt):
 
     content = payloadOptions.get("content", None)
     pattern = payloadOptions.get("regex", None)
-    print("inside pattern")
-    print(pattern)
+    # print("inside pattern")
+    # print(pattern)
 
     if content is not None:
         if isinstance(payload, Raw):
@@ -28,7 +28,7 @@ def checkPayload(payloadOptions, pkt):
 
     elif pattern is not None:
         decoded = bytes(payload).decode('UTF-8','replace')
-        print("inside regex")
+        # print("inside regex")
         print(pattern)
         print(decoded)
         try:

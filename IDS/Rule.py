@@ -91,17 +91,17 @@ class Rule:
         
         # Matches PAYLOAD
         payload = self.ruleOptions.get("payloadDetectionOptions", None) if self.ruleOptions else None
-        print("payload dict",payload)
+        # print("payload dict",payload)
         if payload is not None:
             pktpayload = self._process_tcp_payload(pkt)
             if pktpayload is None:
                 return False
-            print("payload dict",payload)
+            # print("payload dict",payload)
             content = payload.get("content", None)
             regex = payload.get("regex", None)
             if content is not None and content != pktpayload:
                 return False
-            print("regex",regex)
+            # print("regex",regex)
             if regex is not None and not re.search(regex, pktpayload):
                 return False
 
@@ -116,7 +116,7 @@ class Rule:
         # If there is some message to print 
         msg = "[USER DEFINED MSG] \n"
         msg += self.getMessageToPrint()
-        print("before calling alert")
+        # print("before calling alert")
         alert = Alert()
         ipString = alert.ipString(pkt, ruleSid)
         tcpString = alert.tcpString(pkt, ruleSid) if pkt.haslayer(TCP) else ""
